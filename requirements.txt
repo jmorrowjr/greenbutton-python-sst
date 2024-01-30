@@ -1,2 +1,5 @@
 
 pytz
+pandas
+pyodbc
+requests

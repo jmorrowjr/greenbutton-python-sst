@@ -127,7 +127,7 @@ class QualityOfReading(Enum):
     validated = 17
     verified = 18
         
-class ServiceKind(Enum):
+class ServiceCategory(Enum):
     electricity = 0
     naturalGas = 1
     water = 2

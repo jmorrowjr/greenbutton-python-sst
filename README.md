@@ -9,3 +9,7 @@ entities).
 
 There's a bit of documentation in the `doc` directory about the ESPI
 standard, mostly figured out from public sources and actual ESPI files.
+
+
+TO UPDATE Requirements.txt:
+   pip install --no-cache-dir -r requirements.txt

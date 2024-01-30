@@ -3,7 +3,7 @@
 import sys
 import xml.etree.ElementTree as ET
 
-from .resources import *
+from resources import *
 
 def parse_feed(filename):
     tree = ET.parse(filename)
@@ -13,13 +13,13 @@ def parse_feed(filename):
         up = UsagePoint(entry)
         usagePoints.append(up)
     
+    for entry in tree.getroot().findall('atom:entry/atom:content/espi:LocalTimeParameters/../..', ns):
+        LocalTimeParameters(entry, usagePoints=usagePoints)
+
     meterReadings = []    
     for entry in tree.getroot().findall('atom:entry/atom:content/espi:MeterReading/../..', ns):
         mr = MeterReading(entry, usagePoints=usagePoints)
         meterReadings.append(mr)
-
-    for entry in tree.getroot().findall('atom:entry/atom:content/espi:LocalTimeParameters/../..', ns):
-        ltp = LocalTimeParameters(entry, usagePoints=usagePoints)
 
     readingTypes = []
     for entry in tree.getroot().findall('atom:entry/atom:content/espi:ReadingType/../..', ns):

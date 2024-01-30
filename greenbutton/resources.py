@@ -3,9 +3,9 @@
 import bisect
 import functools
 
-from .utils import *
-from .enums import *
-from .objects import *
+from utils import *
+from enums import *
+from objects import *
 
 class Resource(object):
     def __init__(self, entry):
@@ -20,7 +20,7 @@ class Resource(object):
     def isParentOf(self, other):
         return other.link_self in self.link_related or other.link_up in self.link_related
 
-    
+
 class UsagePoint(Resource):
     def __init__(self, entry, meterReadings=[]):
         super(UsagePoint, self).__init__(entry)
@@ -28,7 +28,7 @@ class UsagePoint(Resource):
         self.roleFlags = getEntity(obj, 'espi:roleFlags', lambda e: int(e.text, 16))
         self.status = getEntity(obj, 'espi:status', lambda e: int(e.text))
         self.serviceCategory = getEntity(obj, './espi:ServiceCategory/espi:kind',
-                                         lambda e: ServiceKind(int(e.text)))
+                                         lambda e: ServiceCategory(int(e.text)))
         
         self.meterReadings = set()
         for mr in meterReadings:
@@ -62,7 +62,7 @@ class MeterReading(Resource):
                 self.setReadingType(rt)
         for ib in intervalBlocks:
             if self.isParentOf(ib):
-                self.addIntervalBlock(r)
+                self.addIntervalBlock(ib)
 
     @property
     def intervalReadings(self):
@@ -109,7 +109,7 @@ class ReadingType(Resource):
                                               lambda e: int(e.text))
         self.timeAttribute = getEntity(obj, 'espi:timeAttribute',
                                        lambda e: TimeAttributeType(int(e.text)))
-        self.tou = getEntity(obj, 'espi:tou', lambda e: TOUType(int(e.text)))
+        #self.tou = getEntity(obj, 'espi:tou', lambda e: TOUType(int(e.text)))
         self.uom = getEntity(obj, 'espi:uom', lambda e: UomType(int(e.text)))
 
         for mr in meterReadings:
@@ -128,6 +128,8 @@ class LocalTimeParameters(Resource):
         for up in usagePoints:
             if up.isParentOf(self):
                 up.addLocalTimeParameters(self)
+
+        
 
 
 @functools.total_ordering

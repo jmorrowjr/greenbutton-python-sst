@@ -4,8 +4,8 @@ import datetime
 import functools
 import pytz
 
-from .enums import *
-from .utils import *
+from enums import *
+from utils import *
 
 
 @functools.total_ordering
@@ -13,6 +13,7 @@ class DateTimeInterval:
     def __init__(self, entity):
         self.duration = getEntity(entity, 'espi:duration',
                                   lambda e: datetime.timedelta(seconds=int(e.text)))
+        # Convert the string timestamp to an integer and create the initial UTC datetime
         self.start = getEntity(entity, 'espi:start',
                                lambda e: datetime.datetime.fromtimestamp(int(e.text), pytz.timezone("UTC")))
         
